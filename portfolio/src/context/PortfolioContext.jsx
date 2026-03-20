@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const PortfolioContext = createContext();
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:5000/api';
 
 export const PortfolioProvider = ({ children }) => {
   const [portfolioData, setPortfolioData] = useState(null);
@@ -60,14 +60,14 @@ export const PortfolioProvider = ({ children }) => {
   // Update Portfolio
   const updatePortfolio = async (updatedData) => {
     if (!user) return toast.error('Not authorized');
-    
+
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
       };
-      
+
       const { data } = await axios.put(`${API_URL}/portfolio`, updatedData, config);
       setPortfolioData(data);
       toast.success('Portfolio updated successfully!');

@@ -16,7 +16,9 @@ router.post('/', protect, (req, res) => {
       return res.status(400).json({ message: 'No file uploaded. Please select a file.' });
     }
 
-    const fileUrl = `/uploads/${file.filename}`;
+    // Cloudinary returns the public URL in `file.path`
+    const fileUrl = file.path;
+
     res.json({
       message: 'File uploaded successfully',
       fileUrl: fileUrl
@@ -25,4 +27,3 @@ router.post('/', protect, (req, res) => {
 });
 
 module.exports = router;
-

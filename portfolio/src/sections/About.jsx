@@ -9,7 +9,8 @@ export function About() {
   // Resolve uploaded images vs external URLs
   const resolveImg = (url) => {
     if (!url) return '';
-    return url.startsWith('/uploads') ? `http://localhost:5000${url}` : url;
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return url.startsWith('/uploads') ? `${baseUrl}${url}` : url;
   };
 
   return (

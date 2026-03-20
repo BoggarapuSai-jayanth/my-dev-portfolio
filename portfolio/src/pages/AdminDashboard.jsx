@@ -11,15 +11,15 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 
 const NAV_SECTIONS = [
-  { id: 'hero',           label: 'Hero',           icon: User,           color: '#6366f1' },
-  { id: 'about',          label: 'About',          icon: FileText,        color: '#8b5cf6' },
-  { id: 'skills',         label: 'Skills',         icon: Code2,           color: '#0ea5e9' },
-  { id: 'projects',       label: 'Projects',       icon: Briefcase,       color: '#10b981' },
-  { id: 'internships',    label: 'Internships',    icon: Briefcase,       color: '#f59e0b' },
-  { id: 'training',       label: 'Training',       icon: BookOpen,        color: '#ef4444' },
-  { id: 'education',      label: 'Education',      icon: GraduationCap,   color: '#06b6d4' },
-  { id: 'certifications', label: 'Certifications', icon: Award,           color: '#f97316' },
-  { id: 'achievements',   label: 'Achievements',   icon: Award,           color: '#a855f7' },
+  { id: 'hero', label: 'Hero', icon: User, color: '#6366f1' },
+  { id: 'about', label: 'About', icon: FileText, color: '#8b5cf6' },
+  { id: 'skills', label: 'Skills', icon: Code2, color: '#0ea5e9' },
+  { id: 'projects', label: 'Projects', icon: Briefcase, color: '#10b981' },
+  { id: 'internships', label: 'Internships', icon: Briefcase, color: '#f59e0b' },
+  { id: 'training', label: 'Training', icon: BookOpen, color: '#ef4444' },
+  { id: 'education', label: 'Education', icon: GraduationCap, color: '#06b6d4' },
+  { id: 'certifications', label: 'Certifications', icon: Award, color: '#f97316' },
+  { id: 'achievements', label: 'Achievements', icon: Award, color: '#a855f7' },
 ];
 
 // ── Reusable primitives ─────────────────────────────────────────────────────
@@ -121,10 +121,10 @@ export function AdminDashboard() {
   const { user, logout, portfolioData, updatePortfolio } = usePortfolio();
   const navigate = useNavigate();
 
-  const [formData, setFormData]     = useState(null);
-  const [isSaving, setIsSaving]     = useState(false);
-  const [activeSection, setActive]  = useState('hero');
-  const [sidebarOpen, setSidebar]   = useState(false);
+  const [formData, setFormData] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [activeSection, setActive] = useState('hero');
+  const [sidebarOpen, setSidebar] = useState(false);
 
   useEffect(() => {
     if (portfolioData) {
@@ -168,7 +168,7 @@ export function AdminDashboard() {
     try {
       toast.loading('Uploading…', { id: 'up' });
       const { data } = await axios.post(
-        'http://localhost:5000/api/upload',
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/upload`,
         fd,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -191,8 +191,10 @@ export function AdminDashboard() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const imgSrc = (path) =>
-    path?.startsWith('/uploads') ? `http://localhost:5000${path}` : path;
+  const imgSrc = (path) => {
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return path?.startsWith('/uploads') ? `${baseUrl}${path}` : path;
+  };
 
   // ── Render ───────────────────────────────────────────────────────────────
 
@@ -350,10 +352,10 @@ export function AdminDashboard() {
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { field: 'github',   label: 'GitHub URL',    ph: 'https://github.com/…' },
-                  { field: 'linkedin', label: 'LinkedIn URL',  ph: 'https://linkedin.com/in/…' },
-                  { field: 'twitter',  label: 'Twitter / X',   ph: 'https://twitter.com/…' },
-                  { field: 'email',    label: 'Email Address', ph: 'you@example.com', type: 'email' },
+                  { field: 'github', label: 'GitHub URL', ph: 'https://github.com/…' },
+                  { field: 'linkedin', label: 'LinkedIn URL', ph: 'https://linkedin.com/in/…' },
+                  { field: 'twitter', label: 'Twitter / X', ph: 'https://twitter.com/…' },
+                  { field: 'email', label: 'Email Address', ph: 'you@example.com', type: 'email' },
                 ].map(({ field, label, ph, type }) => (
                   <Field key={field} label={label}>
                     <TextInput
@@ -374,7 +376,7 @@ export function AdminDashboard() {
                 {formData.hero?.resumeUrl ? (
                   <p className="text-xs text-primary">
                     ✓ Uploaded —{' '}
-                    <a href={`http://localhost:5000${formData.hero.resumeUrl}`} target="_blank" rel="noreferrer" className="underline">
+                    <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${formData.hero.resumeUrl}`} target="_blank" rel="noreferrer" className="underline">
                       Preview / Download
                     </a>
                   </p>
@@ -414,9 +416,9 @@ export function AdminDashboard() {
 
               <div className="grid grid-cols-3 gap-4">
                 {[
-                  { field: 'experienceYears',  label: 'Years Experience' },
+                  { field: 'experienceYears', label: 'Years Experience' },
                   { field: 'projectsCompleted', label: 'Projects Completed' },
-                  { field: 'satisfactionRate',  label: 'Satisfaction Rate' },
+                  { field: 'satisfactionRate', label: 'Satisfaction Rate' },
                 ].map(({ field, label }) => (
                   <Field key={field} label={label}>
                     <TextInput
@@ -627,7 +629,7 @@ export function AdminDashboard() {
                     <FileInput accept="application/pdf" onChange={e => handleFileUpload(e, idx, 'training', 'pdfUrl')} label="Training PDF" />
                     {item.pdfUrl && (
                       <p className="text-xs text-primary mt-1">
-                        ✓ <a href={`http://localhost:5000${item.pdfUrl}`} target="_blank" rel="noreferrer" className="underline">View Uploaded PDF</a>
+                        ✓ <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${item.pdfUrl}`} target="_blank" rel="noreferrer" className="underline">View Uploaded PDF</a>
                       </p>
                     )}
                   </Field>
@@ -723,7 +725,7 @@ export function AdminDashboard() {
                     <FileInput accept="application/pdf" onChange={e => handleFileUpload(e, idx, 'certifications', 'pdfUrl')} label="Certificate PDF" />
                     {item.pdfUrl && (
                       <p className="text-xs text-primary mt-1">
-                        ✓ <a href={`http://localhost:5000${item.pdfUrl}`} target="_blank" rel="noreferrer" className="underline">View Uploaded PDF</a>
+                        ✓ <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${item.pdfUrl}`} target="_blank" rel="noreferrer" className="underline">View Uploaded PDF</a>
                       </p>
                     )}
                   </Field>

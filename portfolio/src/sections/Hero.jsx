@@ -25,7 +25,8 @@ export function Hero() {
   const handleDownloadResume = async () => {
     if (!heroData.resumeUrl) return;
     try {
-      const response = await fetch(`http://localhost:5000${heroData.resumeUrl}`);
+      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${baseUrl}${heroData.resumeUrl}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -44,7 +45,7 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-background [perspective:1000px]">
       {/* ── 3D Comets Background ── */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none [transform-style:preserve-3d]">
-        
+
         {/* Deep background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[150px] opacity-50 animate-pulse" />
         <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-sky-500/10 rounded-full blur-[120px]" />
@@ -94,7 +95,7 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6"
         >
-          {heroData.greeting || "Hi, I'm"} <br className="hidden md:block"/>
+          {heroData.greeting || "Hi, I'm"} <br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-green-400 to-sky-500 animate-gradient-x">
             {heroData.name || "Boggarapu Sai Jayanth"}
           </span>
@@ -136,11 +137,11 @@ export function Hero() {
             { Icon: Linkedin, href: ensureUrl(heroData.linkedin), label: 'LinkedIn' },
             { Icon: Mail, href: `mailto:${heroData.email || ''}`, label: 'Email' }
           ].map(({ Icon, href, label }, idx) => (
-            <a 
+            <a
               key={idx}
-              href={href} 
-              target="_blank" 
-              rel="noreferrer" 
+              href={href}
+              target="_blank"
+              rel="noreferrer"
               aria-label={label}
               className="p-3 rounded-full bg-secondary/30 hover:bg-primary/20 hover:text-primary transition-all border border-transparent hover:border-primary/30 animate-float"
               style={{ animationDelay: `${idx * 0.2}s` }}

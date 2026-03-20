@@ -52,7 +52,7 @@ export function Certifications() {
                 )}
                 {cert.pdfUrl && (
                   <a
-                    href={`http://localhost:5000${cert.pdfUrl}`}
+                    href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${cert.pdfUrl}`}
                     className="inline-flex items-center gap-2 text-sm font-medium text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-md transition-colors w-fit"
                     target="_blank"
                     rel="noreferrer"

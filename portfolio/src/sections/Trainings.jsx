@@ -59,7 +59,7 @@ export function Trainings() {
                   </p>
                   {item.pdfUrl && (
                     <a
-                      href={`http://localhost:5000${item.pdfUrl}`}
+                      href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${item.pdfUrl}`}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-medium hover:bg-primary/20 transition-colors"
