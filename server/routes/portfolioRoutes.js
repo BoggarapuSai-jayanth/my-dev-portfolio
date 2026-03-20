@@ -82,13 +82,6 @@ const getInitialPortfolioData = () => {
 // GET /api/portfolio
 // Public route to fetch portfolio data
 router.get('/', async (req, res) => {
-  const mongoose = require('mongoose');
-  if (mongoose.connection.readyState !== 1) {
-    return res.status(500).json({
-      message: "Database not connected",
-      error: "Mongoose readyState is " + mongoose.connection.readyState
-    });
-  }
 
   try {
     let portfolio = await Portfolio.findOne();
