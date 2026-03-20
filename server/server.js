@@ -12,7 +12,10 @@ const uploadRoutes = require('./routes/uploadRoutes');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://my-dev-portfolio-ruby.vercel.app', 'http://localhost:5173'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Serve static files from the uploads directory
@@ -35,12 +38,6 @@ app.get('/api/health', (req, res) => {
     message: "Server is running successfully 🚀"
   });
 });
-
-app.use(cors({
-  origin: ['https://my-dev-portfolio-ruby.vercel.app', 'http://localhost:5173'],
-  credentials: true
-}));
-
 
 const PORT = process.env.PORT || 5000;
 
